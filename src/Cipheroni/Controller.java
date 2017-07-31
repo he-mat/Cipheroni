@@ -29,13 +29,15 @@ public class Controller {
     Button btnEnode;
     @FXML
     Button btnDecode;
+    @FXML
+    CheckBox chkPunctuation;
 
-    // our alphabet (no idea why its in caps, can't change it anymore (thanks IDEA!))
-    private HashMap<Character,Integer> ALPHABET = new HashMap<>();
+    // our alphabet
+    private HashMap<Character,Integer> alphabet = new HashMap<>();
 
-    // self explanatory
+    // super method that gets called when the fxml file is loaded
     public void initialize() {
-        fillMapCaps(ALPHABET);
+        fillMapCaps(alphabet);
     }
 
     // self explanatory
@@ -84,8 +86,13 @@ public class Controller {
 
             // convert the message to its arithmetic counterpart
             for ( int c = 0; c < msgChar.length; c++ ) {
-                msgInt[c] = ALPHABET.get(msgChar[c]);
-                keyInt[c] = ALPHABET.get(keyChar[c]);
+                msgInt[c] = alphabet.get(msgChar[c]);
+                keyInt[c] = alphabet.get(keyChar[c]);
+
+                if (msgChar[c] == ' ') {
+
+                }
+
                 // the Beaufort algorithm
                 if ( chkBea.isSelected() ) {
                     resultInt[c] = keyInt[c] - msgInt[c];
@@ -101,7 +108,7 @@ public class Controller {
                 }
                 // reverse (mis-)use the HashMap to get the char paired with the values
                 // to get the ciphered message as a String
-                resultChar[c] = getKeyByValue(ALPHABET, resultInt[c]);
+                resultChar[c] = getKeyByValue(alphabet, resultInt[c]);
             }
             // display the ciphered message
             txaResult.setText(String.valueOf(resultChar));
@@ -143,8 +150,8 @@ public class Controller {
             char[] resultChar = new char[keyChar.length];
 
             for ( int c = 0; c < msgChar.length; c++ ) {
-                msgInt[c] = ALPHABET.get(msgChar[c]);
-                keyInt[c] = ALPHABET.get(keyChar[c]);
+                msgInt[c] = alphabet.get(msgChar[c]);
+                keyInt[c] = alphabet.get(keyChar[c]);
                 if ( chkBea.isSelected() ) {
                     resultInt[c] = keyInt[c] - msgInt[c];
                     if (keyInt[c] - msgInt[c] < 0) {
@@ -158,7 +165,7 @@ public class Controller {
                 } else {
                     error(2);
                 }
-                resultChar[c] = getKeyByValue(ALPHABET, resultInt[c]);
+                resultChar[c] = getKeyByValue(alphabet, resultInt[c]);
             }
             // display the cipher
             txaResult.setText(String.valueOf(resultChar));
@@ -212,7 +219,7 @@ public class Controller {
         chkBea.setSelected(false);
     }
 
-    // fill the HashMap with the alphabet
+    // fill the HashMap with the alphabet in Caps
     private void fillMapCaps(HashMap<Character,Integer> map) {
         map.put('A', 0);
         map.put('B', 1);
@@ -240,6 +247,6 @@ public class Controller {
         map.put('X', 23);
         map.put('Y', 24);
         map.put('Z', 25);
-        map.put(' ', 26);
+        map.put(' ', 100);
     }
 }
